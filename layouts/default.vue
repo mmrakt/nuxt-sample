@@ -45,18 +45,25 @@
         <v-menu offset-y>
           <template v-slot:activator="{ on }">
             <v-btn v-on="on" text>
-              Support
+              メニュー
               <v-icon>mdi-menu-down</v-icon>
             </v-btn>
           </template>
           <v-list>
-            <v-subheader>Get help</v-subheader>
-            <v-list-item v-for="(support, index) in supports" :key="index">
-              <v-list-item-icon>
-                <v-icon>{{ support.icon }}</v-icon>
-              </v-list-item-icon>
+            <v-list-item>
               <v-list-item-content>
-                <v-list-item-title>{{ support.name }}</v-list-item-title>
+                <v-list-item-title
+                  ><nuxt-link to="/user"
+                    >マイページ</nuxt-link
+                  ></v-list-item-title
+                >
+              </v-list-item-content>
+            </v-list-item>
+            <v-list-item>
+              <v-list-item-content>
+                <v-list-item-title
+                  ><nuxt-link to="/">タイムライン</nuxt-link></v-list-item-title
+                >
               </v-list-item-content>
             </v-list-item>
           </v-list>
@@ -75,13 +82,6 @@ export default {
   data() {
     return {
       drawer: null,
-      supports: [
-        { name: 'Consulting and support', icon: 'mdi-vuetify' },
-        { name: 'Discord community', icon: 'mdi-discord' },
-        { name: 'Report community', icon: 'mdi-bug' },
-        { name: 'GitHub issue board', icon: 'mdi-github-face' },
-        { name: 'Stack overview', icon: 'mdi-stack-overflow' }
-      ],
       nav_lists: [
         {
           name: 'Getting Started',
