@@ -39,8 +39,11 @@
       <v-toolbar-title>Sample App</v-toolbar-title>
       <v-spacer></v-spacer>
       <v-toolbar-items>
-        <v-btn text>
-          <nuxt-link to="/login">Login</nuxt-link>
+        <v-btn text v-if="this.isLogin" @click="signout">
+          サインアウト
+        </v-btn>
+        <v-btn text v-else>
+          <nuxt-link to="/login" text-white>サインイン</nuxt-link>
         </v-btn>
         <v-menu offset-y>
           <template v-slot:activator="{ on }">
@@ -77,6 +80,8 @@
 </template>
 
 <script>
+const firebase = require('firebase')
+
 export default {
   name: 'default',
   data() {
@@ -102,7 +107,37 @@ export default {
         { name: 'Directives', icon: 'mdi-function' },
         { name: 'Premium themes', icon: 'mdi-veutify' },
         { name: 'Twitter', icon: 'mdi-twitter' }
-      ]
+      ],
+      isLogin: false,
+      loginUser: null
+    }
+  },
+  mounted() {
+    firebase.auth().onAuthStateChanged((user) => {
+      var user = firebase.auth().currentUser
+      if (user) {
+        this.isLogin = true
+        this.loginUser = user
+        console.log(user)
+      } else {
+        return
+      }
+    })
+  },
+  methods: {
+    signout() {
+      firebase.auth().onAuthStateChanged((user) => {
+        firebase
+          .auth()
+          .signOut()
+          .then(() => {
+            this.isLogin = false
+            this.$router.push('/login')
+          })
+          .catch((error) => {
+            console.log(error)
+          })
+      })
     }
   }
 }

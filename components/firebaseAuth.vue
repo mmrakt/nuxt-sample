@@ -16,14 +16,14 @@ export default {
         firebaseui.auth.AnonymousAuthProvider.PROVIDER_ID,
         firebase.auth.EmailAuthProvider.PROVIDER_ID,
         firebase.auth.GoogleAuthProvider.PROVIDER_ID,
-        //firebase.auth.FacebookAuthProvider.PROVIDER_ID,
-        //firebase.auth.TwitterAuthProvider.PROVIDER_ID,
         firebase.auth.GithubAuthProvider.PROVIDER_ID
-        //firebase.auth.PhoneAuthProvider.PROVIDER_ID
       ]
     }
-
-    const ui = new firebaseui.auth.AuthUI(firebase.auth())
+    //Auth UIインスタンスが存在しなければ初期化する
+    const ui =
+      firebaseui.auth.AuthUI.getInstance() ||
+      new firebaseui.auth.AuthUI(firebase.auth())
+    //FirebaseUI Auth のインターフェースをレンダリング
     ui.start('#firebaseui-auth-container', uiConfig)
   }
 }
