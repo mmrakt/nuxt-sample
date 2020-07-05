@@ -4,11 +4,11 @@
       <v-form ref="form" class="pa-5">
         <label for="name">
           なまえ:
-          <v-text-field name="name" type="text" v-model="name" />
+          <v-text-field v-model="name" name="name" type="text" />
         </label>
         <label>
           <span>つぶやき:</span>
-          <v-text-field type="text" v-model="content" />
+          <v-text-field v-model="content" type="text" />
         </label>
         <v-btn color="primary" @click="add">つぶやく</v-btn>
       </v-form>
@@ -18,8 +18,8 @@
         <v-card-text v-if="post.editFlag">
           <v-text-field
             ref="input"
-            type="text"
             v-model="newContent"
+            type="text"
             @keyup.enter="update(post.id)"
             @blur="close(post.id)"
           />
@@ -36,12 +36,16 @@
             </v-list-item-content>
             <v-spacer></v-spacer>
             <v-row right>
-              <v-icon v-if="!post.liked" @click="like(post.id)">mdi-heart</v-icon>
-              <v-icon v-else @click="unlike(post.id)" color="red lighten-2">mdi-heart</v-icon>
+              <v-icon v-if="!post.liked" @click="like(post.id)"
+                >mdi-heart</v-icon
+              >
+              <v-icon v-else color="red lighten-2" @click="unlike(post.id)"
+                >mdi-heart</v-icon
+              >
               <div class="mx-2"></div>
               <v-icon @click="open(post.id, index)">mdi-pencil</v-icon>
               <div class="mx-2"></div>
-              <v-btn class="float-right" @click="remove(post.id)" right>
+              <v-btn class="float-right" right @click="remove(post.id)">
                 <v-icon left>mdi-delete</v-icon>削除
               </v-btn>
             </v-row>
@@ -53,10 +57,6 @@
 </template>
 
 <script>
-import { firebase, db, postRef } from '../plugins/firebase'
-//import { moment, getDate } from 'moment'
-import { mapState, mapActions, mapGetters } from 'vuex'
-
 export default {
   data() {
     return {
@@ -66,12 +66,23 @@ export default {
       newContent: ''
     }
   },
+  computed: {
+    postList() {
+      return this.$store.getters['post/postList']
+    },
+    // computedに引数は渡せないが、返り値を関数にすれば指定可能
+    editFlag() {
+      return function(postId) {
+        return this.$store.getters[('post/editFlag', postId)]
+      }
+    }
+  },
   created() {
     this.$store.dispatch('post/postInit')
   },
   methods: {
     add() {
-      //データを渡す時はオブジェクト形式にする
+      // データを渡す時はオブジェクト形式にする
       const postData = {
         username: this.name,
         newContent: this.content
@@ -80,8 +91,8 @@ export default {
       this.name = ''
       this.content = ''
     },
-    open(postId, index) {
-      //this.$store.dispatch('post/open', postId)
+    open(index) {
+      // this.$store.dispatch('post/open', postId)
       this.$nextTick(() => this.$refs.input[index].focus())
       console.log(index)
     },
@@ -104,17 +115,6 @@ export default {
     },
     unlike(postId) {
       this.$store.dispatch('post/unlike', postId)
-    }
-  },
-  computed: {
-    postList() {
-      return this.$store.getters['post/postList']
-    },
-    //computedに引数は渡せないが、返り値を関数にすれば指定可能
-    editFlag() {
-      return function(postId) {
-        return this.$store.getters[('post/editFlag', postId)]
-      }
     }
   }
 }

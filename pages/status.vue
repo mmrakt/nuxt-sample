@@ -14,16 +14,20 @@
         </tr>
         <tr v-for="status in view_status" :key="status.id">
           <td>
-            <input type="checkbox" v-bind:checked="status.done" @change="toggle(status)" />
+            <input
+              type="checkbox"
+              :checked="status.done"
+              @change="toggle(status)"
+            />
           </td>
 
-          <td>{{status.done}}</td>
-          <td>{{status.session_id}}</td>
+          <td>{{ status.done }}</td>
+          <td>{{ status.session_id }}</td>
           <td>
-            <a v-bind:href="status.url">{{status.url}}</a>
+            <a :href="status.url">{{ status.url }}</a>
           </td>
           <td>
-            <button v-on:click="remove(status.id)">remove</button>
+            <button @click="remove(status.id)">remove</button>
           </td>
         </tr>
       </tbody>
@@ -33,14 +37,20 @@
 
 <script>
 export default {
-  data: function() {
+  data() {
     return {
       session_id: '',
       url: '',
       done: false
     }
   },
-  created: function() {
+  computed: {
+    view_status() {
+      // return this.$store.state.view_status.statuses
+      return this.$store.getters['view_status/orderedStatus']
+    }
+  },
+  created() {
     this.$store.dispatch('view_status/init')
   },
   methods: {
@@ -49,12 +59,6 @@ export default {
     },
     toggle(status) {
       this.$store.dispatch('view_status/toggle', status)
-    }
-  },
-  computed: {
-    view_status() {
-      // return this.$store.state.view_status.statuses
-      return this.$store.getters['view_status/orderedStatus']
     }
   }
 }

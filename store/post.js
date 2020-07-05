@@ -1,11 +1,5 @@
-import {
-  firestoreAction
-} from 'vuexfire'
-import {
-  postRef,
-  firebase
-} from '../plugins/firebase'
-
+import { firestoreAction } from 'vuexfire'
+import { postRef, firebase } from '../plugins/firebase'
 
 export default {
   namespaced: true,
@@ -13,13 +7,11 @@ export default {
     posts: []
   },
   actions: {
-    //データバインド（同期）
-    postInit: firestoreAction(({
-      bindFirestoreRef
-    }) => {
+    // データバインド（同期）
+    postInit: firestoreAction(({ bindFirestoreRef }) => {
       bindFirestoreRef('posts', postRef)
     }),
-    add: firestoreAction((context, postData) => {
+    add: firestoreAction((postData) => {
       postRef.add({
         name: postData.username,
         content: postData.newContent,
@@ -28,41 +20,41 @@ export default {
         createdAt: firebase.firestore.Timestamp.now()
       })
     }),
-    remove: firestoreAction((context, id) => {
+    remove: firestoreAction((id) => {
       postRef.doc(id).delete()
     }),
-    open: firestoreAction((context, postId) => {
+    open: firestoreAction((postId) => {
       postRef.doc(postId).update({
         editFlag: true
       })
     }),
-    close: firestoreAction((context, postId) => {
+    close: firestoreAction((postId) => {
       postRef.doc(postId).update({
         editFlag: false
       })
     }),
-    update: firestoreAction((context, postData) => {
+    update: firestoreAction((postData) => {
       postRef.doc(postData.id).update({
         content: postData.newContent
       })
     }),
-    like: firestoreAction((context, postId) => {
+    like: firestoreAction((postId) => {
       postRef.doc(postId).update({
         liked: true
       })
     }),
-    unlike: firestoreAction((context, postId) => {
+    unlike: firestoreAction((postId) => {
       postRef.doc(postId).update({
         liked: false
       })
     })
   },
   getters: {
-    postList: state => {
+    postList: (state) => {
       return state.posts
     },
-    getPost: state => postId => {
-      return state.posts.filter(post => post.id === postId)[0]
+    getPost: (state) => (postId) => {
+      return state.posts.filter((post) => post.id === postId)[0]
     }
   }
 }

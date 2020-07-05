@@ -19,11 +19,11 @@ export default {
         firebase.auth.GithubAuthProvider.PROVIDER_ID
       ]
     }
-    //Auth UIインスタンスが存在しなければ初期化する
+    // Auth UIインスタンスが存在しなければ初期化する
     const ui =
       firebaseui.auth.AuthUI.getInstance() ||
       new firebaseui.auth.AuthUI(firebase.auth())
-    //FirebaseUI Auth のインターフェースをレンダリング
+    // FirebaseUI Auth のインターフェースをレンダリング
     ui.start('#firebaseui-auth-container', uiConfig)
   }
 }

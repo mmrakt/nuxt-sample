@@ -1,6 +1,6 @@
 <template>
   <v-app>
-    <v-navigation-drawer app v-model="drawer" clipped>
+    <v-navigation-drawer v-model="drawer" app clipped>
       <v-container>
         <v-list-item>
           <v-list-item-content>
@@ -39,15 +39,15 @@
       <v-toolbar-title>Sample App</v-toolbar-title>
       <v-spacer></v-spacer>
       <v-toolbar-items>
-        <v-btn text v-if="this.isLogin" @click="signout">
+        <v-btn v-if="isLogin" text @click="signout">
           サインアウト
         </v-btn>
-        <v-btn text v-else>
+        <v-btn v-else text>
           <nuxt-link to="/login" text-white>サインイン</nuxt-link>
         </v-btn>
         <v-menu offset-y>
           <template v-slot:activator="{ on }">
-            <v-btn v-on="on" text>
+            <v-btn text v-on="on">
               メニュー
               <v-icon>mdi-menu-down</v-icon>
             </v-btn>
@@ -83,7 +83,7 @@
 const firebase = require('firebase')
 
 export default {
-  name: 'default',
+  name: 'Default',
   data() {
     return {
       drawer: null,
@@ -92,41 +92,24 @@ export default {
           name: 'Getting Started',
           icon: 'mdi-vuetify',
           lists: ['Quick start', 'Pre-mode layouts']
-        },
-        { name: 'Customization', icon: 'mdi-cogs' },
-        {
-          name: 'Styles & animations',
-          icon: 'mdi-palette',
-          lists: ['Colors', 'Contet', 'Display']
-        },
-        {
-          name: 'Ui Components',
-          icon: 'mdi-view-dashboard',
-          lists: ['API explorer', 'Alerts']
-        },
-        { name: 'Directives', icon: 'mdi-function' },
-        { name: 'Premium themes', icon: 'mdi-veutify' },
-        { name: 'Twitter', icon: 'mdi-twitter' }
+        }
       ],
       isLogin: false,
       loginUser: null
     }
   },
   mounted() {
-    firebase.auth().onAuthStateChanged((user) => {
-      var user = firebase.auth().currentUser
-      if (user) {
-        this.isLogin = true
-        this.loginUser = user
-        console.log(user)
-      } else {
-        return
-      }
-    })
+    const user = firebase.auth().currentUser
+    if (user) {
+      this.isLogin = true
+      this.loginUser = user
+      console.log(user)
+    } else {
+    }
   },
   methods: {
     signout() {
-      firebase.auth().onAuthStateChanged((user) => {
+      firebase.auth().onAuthStateChanged(() => {
         firebase
           .auth()
           .signOut()

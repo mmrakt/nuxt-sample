@@ -1,10 +1,5 @@
-import {
-  firestoreAction
-} from 'vuexfire'
-import {
-  statusRef,
-  firebase
-} from '../plugins/firebase'
+import { firestoreAction } from 'vuexfire'
+import { statusRef } from '../plugins/firebase'
 
 export default {
   namespaced: true,
@@ -12,22 +7,20 @@ export default {
     statuses: []
   },
   actions: {
-    init: firestoreAction(({
-      bindFirestoreRef
-    }) => {
+    init: firestoreAction(({ bindFirestoreRef }) => {
       bindFirestoreRef('statuses', statusRef)
     }),
-    remove: firestoreAction((context, id) => {
+    remove: firestoreAction((id) => {
       statusRef.doc(id).delete()
     }),
-    toggle: firestoreAction((context, status) => {
+    toggle: firestoreAction((status) => {
       statusRef.doc(status.id).update({
         done: !status.done
       })
     })
   },
   getters: {
-    orderedStatus: state => {
+    orderedStatus: (state) => {
       return state.statuses
     }
   }

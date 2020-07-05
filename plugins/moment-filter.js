@@ -6,14 +6,20 @@ import moment from 'moment'
 //   return date.format("YYYY/MM/DD");
 // })
 
-export let getDate = function() {
-  let now = new Date()
-  let year = now.getFullYear()
-  let month = now.getMonth() + 1
-  let date = now.getDate()
-  let hour = now.getHours()
-  let minute = now.getMinutes()
-  let second = now.getSeconds()
-  let sortedDate = year + '/' + month + '/' + date + ' ' + hour + ':' + minute + ':' + second
+export const getDate = () => {
+  const now = new Date()
+  const year = now.getFullYear()
+  const month = now.getMonth() + 1
+  const date = now.getDate()
+  const hour = now.getHours()
+  const minute = now.getMinutes()
+  const second = now.getSeconds()
+  const sortedDate =
+    year + '/' + month + '/' + date + ' ' + hour + ':' + minute + ':' + second
   return sortedDate
+}
+
+export {
+  Vue,
+  moment
 }
