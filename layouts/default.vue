@@ -39,35 +39,38 @@
       <v-toolbar-title>Sample App</v-toolbar-title>
       <v-spacer></v-spacer>
       <v-toolbar-items>
-        <v-btn v-if="isLogin" text @click="signout">
-          サインアウト
-        </v-btn>
-        <v-btn v-else text>
-          <nuxt-link to="/login" text-white>サインイン</nuxt-link>
-        </v-btn>
         <v-menu offset-y>
           <template v-slot:activator="{ on }">
             <v-btn text v-on="on">
-              メニュー
-              <v-icon>mdi-menu-down</v-icon>
+              <v-icon>mdi-account</v-icon>
             </v-btn>
           </template>
           <v-list>
             <v-list-item>
               <v-list-item-content>
-                <v-list-item-title
-                  ><nuxt-link to="/user"
-                    >マイページ</nuxt-link
-                  ></v-list-item-title
-                >
+                <v-list-item-title>
+                  <v-btn v-if="isLogin" text @click="signout">
+                    サインアウト
+                  </v-btn>
+                  <v-btn v-else text>
+                    <nuxt-link to="/login" text-white>サインイン</nuxt-link>
+                  </v-btn>
+                </v-list-item-title>
               </v-list-item-content>
             </v-list-item>
             <v-list-item>
               <v-list-item-content>
-                <v-list-item-title
-                  ><nuxt-link to="/">タイムライン</nuxt-link></v-list-item-title
-                >
+                <v-list-item-title>
+                  <v-btn color="white">
+                    <nuxt-link :to="{ name: 'users-id', params: { id: uid } }">
+                      マイページ
+                    </nuxt-link>
+                  </v-btn>
+                </v-list-item-title>
               </v-list-item-content>
+            </v-list-item>
+            <v-list-item>
+              <v-list-item-content> </v-list-item-content>
             </v-list-item>
           </v-list>
         </v-menu>
@@ -95,17 +98,23 @@ export default {
         }
       ],
       isLogin: false,
-      loginUser: null
+      name: null,
+      email: null,
+      uid: null,
+      photo: null
     }
   },
   mounted() {
-    const user = firebase.auth().currentUser
-    if (user) {
-      this.isLogin = true
-      this.loginUser = user
-      console.log(user)
-    } else {
-    }
+    firebase.auth().onAuthStateChanged((user) => {
+      if (user) {
+        this.isLogin = true
+        this.name = user.displayName
+        this.email = user.email
+        this.uid = user.uid
+        this.photo = user.photoURL
+      } else {
+      }
+    })
   },
   methods: {
     signout() {
@@ -121,6 +130,9 @@ export default {
             console.log(error)
           })
       })
+    },
+    mypage() {
+      this.$router.push('users/123/')
     }
   }
 }
