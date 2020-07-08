@@ -11,7 +11,7 @@ export default {
     require('firebaseui/dist/firebaseui.css')
 
     const uiConfig = {
-      signInSuccessUrl: '/',
+      signInSuccessUrl: '/timeline',
       signInOptions: [
         firebaseui.auth.AnonymousAuthProvider.PROVIDER_ID,
         firebase.auth.EmailAuthProvider.PROVIDER_ID,
