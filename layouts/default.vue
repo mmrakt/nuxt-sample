@@ -49,9 +49,7 @@
             <v-list-item>
               <v-list-item-content>
                 <v-list-item-title>
-                  <v-btn v-if="isLogin" text @click="signout">
-                    サインアウト
-                  </v-btn>
+                  <v-btn v-if="isLogin" text @click="signout">サインアウト</v-btn>
                   <v-btn v-else text>
                     <nuxt-link to="/login" text-white>サインイン</nuxt-link>
                   </v-btn>
@@ -62,15 +60,13 @@
               <v-list-item-content>
                 <v-list-item-title>
                   <v-btn color="white">
-                    <nuxt-link :to="{ name: 'users-id', params: { id: uid } }">
-                      マイページ
-                    </nuxt-link>
+                    <nuxt-link :to="{ name: 'users-id', params: { id: uid } }">マイページ</nuxt-link>
                   </v-btn>
                 </v-list-item-title>
               </v-list-item-content>
             </v-list-item>
             <v-list-item>
-              <v-list-item-content> </v-list-item-content>
+              <v-list-item-content></v-list-item-content>
             </v-list-item>
           </v-list>
         </v-menu>
@@ -96,25 +92,16 @@ export default {
           icon: 'mdi-vuetify',
           lists: ['Quick start', 'Pre-mode layouts']
         }
-      ],
-      isLogin: false,
-      name: null,
-      email: null,
-      uid: null,
-      photo: null
+      ]
     }
   },
-  mounted() {
-    firebase.auth().onAuthStateChanged((user) => {
-      if (user) {
-        this.isLogin = true
-        this.name = user.displayName
-        this.email = user.email
-        this.uid = user.uid
-        this.photo = user.photoURL
-      } else {
-      }
-    })
+  computed: {
+    isLogin() {
+      return this.$store.state.auth.isLogin
+    },
+    uid() {
+      return this.$store.state.auth.data.uid
+    }
   },
   methods: {
     signout() {
@@ -123,16 +110,10 @@ export default {
           .auth()
           .signOut()
           .then(() => {
-            this.isLogin = false
+            this.$store.dispatch('auth/delete')
             this.$router.push('/login')
           })
-          .catch((error) => {
-            console.log(error)
-          })
       })
-    },
-    mypage() {
-      this.$router.push('users/123/')
     }
   }
 }

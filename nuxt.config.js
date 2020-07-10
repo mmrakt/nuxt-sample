@@ -45,7 +45,8 @@ export default {
     {
       src: '~/plugins/moment-filter',
       ssr: false
-    }
+    },
+    '~/plugins/vee-validate',
   ],
   /*
    ** Nuxt.js dev-modules
@@ -98,6 +99,9 @@ export default {
     /*
      ** You can extend webpack config here
      */
-    extend() {}
-  }
+    extend() {},
+    transpile: [
+      'vee-validate/dist/rules'
+    ]
+  },
 }

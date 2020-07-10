@@ -74,7 +74,6 @@ export default {
     }
   },
   mounted() {
-    this.$store.dispatch('auth/set')
     this.$store.dispatch('post/postInit')
   },
   methods: {
@@ -108,6 +107,7 @@ export default {
       this.$store.dispatch('post/remove', postId)
     },
     like(postId) {
+      console.log(postId)
       this.$store.dispatch('post/like', postId)
     },
     unlike(postId) {

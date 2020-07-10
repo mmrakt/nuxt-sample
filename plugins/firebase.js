@@ -1,4 +1,4 @@
-import * as firebase from 'firebase/app'
+import firebase from 'firebase/app'
 import 'firebase/auth'
 import 'firebase/firestore'
 
@@ -19,5 +19,12 @@ if (!firebase.apps.length) {
 const db = firebase.firestore()
 const postRef = db.collection('posts')
 const statusRef = db.collection('statuses')
+const userRef = db.collection('users')
 
-export { firebase, db, postRef, statusRef }
+export {
+  firebase,
+  db,
+  postRef,
+  statusRef,
+  userRef
+}

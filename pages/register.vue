@@ -8,28 +8,37 @@
           <v-container class="px-10">
             <ValidationProvider
               v-slot="{ errors, valid }"
-              rules="required|alpha_num|min:8"
+              rules="required|alpha_num"
             >
               <v-text-field
                 v-model="userId"
                 name="userId"
                 type="text"
-                label="ユーザーID"
+                label="ユーザーID(半角英数字)"
                 :error-messages="errors"
                 :success="valid"
                 alpha_num
                 required
-                min:8
-                placeholder="半角英数字8文字以上"
               />
             </ValidationProvider>
-            <v-text-field
-              v-model="profile"
-              name="profile"
-              type="text"
-              label="プロフィール文"
-            />
-            <date-picker v-model="date" />
+
+            <ValidationProvider
+              v-slot="{ errors, valid }"
+              rules="required|email"
+            >
+              <v-text-field
+                id="email"
+                v-model="email"
+                name="email"
+                type="text"
+                label="メールアドレス"
+                :error-messages="errors"
+                :success="valid"
+                required
+                email
+              />
+            </ValidationProvider>
+            <date-picker v-model="birthday" />
             <v-btn color="primary" @click="submit">登録</v-btn>
           </v-container>
         </v-form>
@@ -51,13 +60,30 @@ export default {
   data() {
     return {
       userId: '',
-      profile: '',
-      date: ''
+      email: '',
+      birthday: ''
     }
   },
   computed: {
     userData() {
       return this.$store.state.auth.data
+    }
+  },
+  mounted() {
+    this.$store.dispatch('auth/init')
+    // this.$store.dispatch('auth/set')
+  },
+  methods: {
+    submit() {
+      const userData = {
+        userId: this.userId,
+        email: this.email,
+        birthday: this.birthday
+      }
+      console.log(userData)
+      this.$store.dispatch('auth/register', userData)
+
+      this.$router.push('/timeline')
     }
   }
 }

@@ -1,5 +1,10 @@
-import { firestoreAction } from 'vuexfire'
-import { postRef, firebase } from '../plugins/firebase'
+import {
+  firestoreAction
+} from 'vuexfire'
+import {
+  postRef,
+  firebase
+} from '../plugins/firebase'
 
 export default {
   namespaced: true,
@@ -8,7 +13,9 @@ export default {
   },
   actions: {
     // データバインド（同期）
-    postInit: firestoreAction(({ bindFirestoreRef }) => {
+    postInit: firestoreAction(({
+      bindFirestoreRef
+    }) => {
       bindFirestoreRef('posts', postRef)
     }),
     add: firestoreAction((postData) => {

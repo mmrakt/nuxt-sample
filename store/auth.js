@@ -12,10 +12,9 @@ export default {
     users: [],
     isLogin: false,
     data: {
-      name: "",
+      id: "",
       email: "",
-      uid: "",
-      photo: "",
+      birthday: "",
     }
   },
   mutations: {
@@ -57,10 +56,10 @@ export default {
     },
     register: firestoreAction((userData) => {
       userRef.add({
-        userId: userData.userId,
-        displayName: userData.displayName,
+        id: userData.userId,
+        birthday: userData.birthday,
         email: userData.email
       })
     })
-  },
+  }
 }
