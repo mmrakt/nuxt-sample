@@ -34,7 +34,7 @@
     "husky": "^4.2.5",
     "lint-staged": "^10.2.11",
     "prettier": "^1.19.1",
-    "stylelint": "^10.1.0"
+    "stylelint": "^15.10.1"
   },
   "husky": {
     "hooks": {
